@@ -1,7 +1,7 @@
 /**
  * 
  */
-package loggerGUI;
+package logger;
 
 import java.awt.Choice;
 import java.awt.EventQueue;
@@ -87,7 +87,7 @@ public class LoggerGUI
 		panel.add(txtIdPrac);
 		txtIdPrac.setColumns(10);
 
-		JButton btnJustDoIt = new JButton("JUST DO IT");
+		JButton btnJustDoIt = new JButton("Zatwierdź");
 		btnJustDoIt.setBounds(106, 208, 107, 41);
 		panel.add(btnJustDoIt);
 
