@@ -215,6 +215,8 @@ public String getEmployees(String name, String surname, String employeeID)
 	return results;
 }
 
+//public String getLoggers(String deptID);
+
 public String getLogs(String name, String surname, String employeeID, String eventType, Date afterDate, Date beforeDate, boolean possibleError )
 {
 	String columnNames = "ID PRACOWNIKA|        IMIĘ|    NAZWISKO|      PESEL|ID DEPT-u|OSTATNIE ZDARZENIE| ID LOGU|       DATA I GODZINA|BŁĄD|       ZDARZENIE|ID LOGGERA|";
@@ -286,7 +288,7 @@ public String getLogs(String name, String surname, String employeeID, String eve
 	}
 	
 	try {
-		PreparedStatement prst = myConnection.prepareStatement(sql + " group by employee_id ");
+		PreparedStatement prst = myConnection.prepareStatement(sql + " order by employee_id ");
 		if(name_id > 0)
 		{
 			prst.setString(name_id, name);
