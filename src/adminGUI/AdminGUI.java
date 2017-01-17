@@ -6,14 +6,21 @@ package adminGUI;
 import java.awt.Choice;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.ScrollPane;
+import java.awt.event.ActionEvent;
+import utils.DBConnection;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.JTextArea;
 
 /**
  * @author x
@@ -26,11 +33,13 @@ public class AdminGUI
 	private JTextField txtIdPracownika;
 	private JTextField txtDateStart;
 	private JTextField txtDateEnd;
-	private JPanel panel;
-	private JTable table;
+	private JScrollPane textPanel;
 	private JPanel panel_1;
 	private JButton btnRefresh;
 	private JTextField txtNazwisko;
+	private DBConnection dbc;
+	private JCheckBox chckbxTylkoLogiMoliwie;
+	private JTextArea outTextArea;
 
 	/**
 	 * Launch the application.
@@ -67,6 +76,7 @@ public class AdminGUI
 	 */
 	private void initialize()
 	{
+		dbc = new DBConnection("192.168.43.87");
 		frame = new JFrame();
 		frame.setBounds(100, 100, 823, 580);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,7 +117,7 @@ public class AdminGUI
 		panel_filtry.add(txtDateEnd);
 		txtDateEnd.setColumns(10);
 
-		JCheckBox chckbxTylkoLogiMoliwie = new JCheckBox(
+		chckbxTylkoLogiMoliwie = new JCheckBox(
 				"tylko logi mo\u017Cliwie b\u0142\u0119dne");
 		chckbxTylkoLogiMoliwie.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		chckbxTylkoLogiMoliwie.setBounds(249, 40, 151, 23);
@@ -118,15 +128,6 @@ public class AdminGUI
 		txtNazwisko.setBounds(132, 11, 100, 19);
 		panel_filtry.add(txtNazwisko);
 		txtNazwisko.setColumns(10);
-
-		panel = new JPanel();
-		panel.setBounds(6, 102, 531, 442);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
-
-		table = new JTable();
-		table.setBounds(0, 22, 511, 420);
-		panel.add(table);
 
 		panel_1 = new JPanel();
 		panel_1.setBounds(586, 31, 211, 271);
@@ -150,5 +151,31 @@ public class AdminGUI
 		btnRefresh = new JButton("Odśwież");
 		btnRefresh.setBounds(0, 147, 199, 23);
 		panel_1.add(btnRefresh);
+		
+		JPanel outJPanel = new JPanel();
+		outJPanel.setBounds(6, 90, 550, 450);
+		frame.getContentPane().add(outJPanel);
+
+				outTextArea = new JTextArea(16, 58);
+				outTextArea.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
+				outTextArea.setBounds(0, 0, 550, 440);
+				outJPanel.add(outTextArea);
+		btnRefresh.addActionListener(new AbstractAction() {
+
+
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = -804237937006333793L;
+
+			@Override
+	        public void actionPerformed(ActionEvent arg0) {
+	            outTextArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), null, null, null, chckbxTylkoLogiMoliwie.isSelected())); 
+				//UPDATE the JTree 
+				
+	        }
+
+
+	    });
 	}
 }

@@ -47,7 +47,7 @@ public DBConnection(String address, String password){
 		   System.exit(1);
 		}
 	try {
-		myConnection = DriverManager.getConnection("jdbc:oracle:thin//"+address+":1521:orakyl", "bd2_project", password);
+		myConnection = DriverManager.getConnection("jdbc:oracle:thin:@"+address+":1521:orakyl", "bd2_project", password);
 		}
 		catch(SQLException ex)
 		{
