@@ -121,20 +121,51 @@ public String[] getEventTypes()
 	return eventTypes;
 }
 
-public String getLogs(String name, String surname, String employeeID, String loggerID, Date afterDate, Date beforeDate, boolean possibleError)
+public boolean insertEmployee(String employeeID, String firstName, String surname, String PESEL, String Department_ID)
+{
+	String sql = "INSERT INTO employee (Employee_ID, FIRST_NAME, Surname, PESEL, Department_ID) values (?, ?, ?, ?, ?)";
+	boolean toReturn = false;
+	try{
+		PreparedStatement prst = myConnection.prepareStatement(sql);
+		prst.setString(1, employeeID);
+		prst.setString(2, firstName);
+		prst.setString(3, surname);
+		prst.setString(4, PESEL);
+		prst.setString(5, Department_ID);
+		toReturn = prst.executeUpdate() == 1;
+	}
+	catch(SQLException e)
+	{
+		e.printStackTrace();
+	}
+	return toReturn;
+}
+
+public String getEmployees(String name, String surname, String employeeID)
+{
+	String columnNames = "ID PRACOWNIKA|        IMIĘ|    NAZWISKO|      PESEL|ID DEPT-u|      NAZWA DEPT-u|OSTATNIE ZDARZENIE|";
+	String resultFormatString = "%13s|%12s|%12s|%11s|%9s|%17s|%16s|";
+	String results = "";
+	String sql = "select e.employee_id, e.first_name, e.surname, e.pesel, e.dept_id, d.name, e.last_event_type from employee as e natural join department as d";
+	
+	
+	return results;
+}
+
+public String getLogs(String name, String surname, String employeeID, String eventType, Date afterDate, Date beforeDate, boolean possibleError )
 {
 	String columnNames = "ID PRACOWNIKA|        IMIĘ|    NAZWISKO|      PESEL|ID DEPT-u|OSTATNIE ZDARZENIE| ID LOGU|       DATA I GODZINA|BŁĄD|       ZDARZENIE|ID LOGGERA|";
 	String resultFormatString = "%13s|%12s|%12s|%11s|%9s|%18s|%8s|%21s|%4s|%16s|%10s|";
 	String results = columnNames;
-	String sql = "select * from employee natural join event_log where ";
+	String sql = "select * from employee natural join event_log ";
 	String sql_name = "first_name = ? ";
 	int name_id = 0;
 	String sql_surname = "surname = ? ";
 	int surname_id = 0;
 	String sql_employeeID = "employee_ID = ? ";
 	int employeeid_id = 0;
-	String sql_loggerID = "logger_id = ? ";
-	int loggerid_id = 0;
+	String sql_event_type = "event_type = ? ";
+	int event_type_id = 0;
 	String sql_possible_error = "possible_error = 1 ";
 	String sql_after_date = "log_date > TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') ";
 	int afterdate_id = 0;
@@ -142,32 +173,33 @@ public String getLogs(String name, String surname, String employeeID, String log
 	int beforedate_id = 0;
 	
 	int globalid = 1;
-	
-	if(name != null && name != "")
+	if ((name != null && !name.equals("")) || (surname != null && surname.equals("") != true) || (employeeID != null && employeeID.equals("") != true) || (eventType != null && eventType.equals("") != true) || possibleError != false)
+		sql += "where ";
+	if(name != null && !name.equals(""))
 	{
 		sql += sql_name;
 		name_id = globalid++;
 	}
-	if(surname != null && surname != "")
+	if(surname != null && surname.equals("") != true)
 	{
 		if(globalid > 1)
 			sql += "AND ";
 		sql += sql_surname;
 		surname_id = globalid++;
 	}
-	if(employeeID != null && employeeID != "")
+	if(employeeID != null && employeeID.equals("") != true)
 	{
 		if(globalid > 1)
 			sql += "AND ";
 		sql += sql_employeeID;
 		employeeid_id = globalid++;
 	}
-	if(loggerID != null && loggerID != "")
+	if(eventType != null && eventType.equals("") != true)
 	{
 		if(globalid > 1)
 			sql += "AND ";
-		sql += sql_loggerID;
-		loggerid_id = globalid++;
+		sql += sql_event_type;
+		event_type_id = globalid++;
 	}
 	if(possibleError != false)
 	{
@@ -192,21 +224,21 @@ public String getLogs(String name, String surname, String employeeID, String log
 	
 	try {
 		PreparedStatement prst = myConnection.prepareStatement(sql);
-		if(name != null && name != "")
+		if(name != null && name.equals("") != true)
 		{
 			prst.setString(name_id, name);
 		}
-		if(surname != null && surname != "")
+		if(surname != null && surname.equals("") != true)
 		{
 			prst.setString(surname_id, surname);
 		}
-		if(employeeID != null && employeeID != "")
+		if(employeeID != null && employeeID.equals("") != true)
 		{
 			prst.setString(employeeid_id, employeeID);
 		}
-		if(loggerID != null && loggerID != "")
+		if(eventType != null && eventType.equals("") != true)
 		{
-			prst.setString(loggerid_id, loggerID);
+			prst.setString(event_type_id, eventType);
 		}
 		if(beforeDate != null)
 		{
