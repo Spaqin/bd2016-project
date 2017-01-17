@@ -7,7 +7,10 @@ import java.awt.Choice;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.sql.Date;
+
 import utils.DBConnection;
+
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -241,7 +244,18 @@ public class AdminGUI
 
 			@Override
 	        public void actionPerformed(ActionEvent arg0) {
-	            outTextArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), null, null, null, chckbxTylkoLogiMoliwie.isSelected())); 
+				String[] rzeczy = txtDateStart.getText().split("-");
+						int year = Integer.valueOf(rzeczy[0]);
+						int month = Integer.valueOf(rzeczy[1]);
+						int day = Integer.valueOf(rzeczy[2]);
+						Date afterDate = new Date(year, month, day);
+
+				rzeczy = txtDateStart.getText().split("-");
+						year = Integer.valueOf(rzeczy[0]);
+						month = Integer.valueOf(rzeczy[1]);
+						day = Integer.valueOf(rzeczy[2]);
+						Date beforeDate = new Date(year, month, day);
+	            outTextArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), null, afterDate, beforeDate, chckbxTylkoLogiMoliwie.isSelected())); 
 				//UPDATE the JTree 
 				
 	        }
