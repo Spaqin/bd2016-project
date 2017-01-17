@@ -143,11 +143,74 @@ public boolean insertEmployee(String employeeID, String firstName, String surnam
 
 public String getEmployees(String name, String surname, String employeeID)
 {
-	String columnNames = "ID PRACOWNIKA|        IMIĘ|    NAZWISKO|      PESEL|ID DEPT-u|      NAZWA DEPT-u|OSTATNIE ZDARZENIE|";
+	String columnNames = "ID PRACOWNIKA|        IMIĘ|    NAZWISKO|      PESEL|ID DEPT-u|     NAZWA DEPT-u|OSTATNIE ZDARZENIE|";
 	String resultFormatString = "%13s|%12s|%12s|%11s|%9s|%17s|%16s|";
-	String results = "";
-	String sql = "select e.employee_id, e.first_name, e.surname, e.pesel, e.dept_id, d.name, e.last_event_type from employee as e natural join department as d";
+	String results = columnNames;
+	String sql = "select employee_id, first_name, surname, pesel, department_id, name, last_event_type from employee natural join department ";
+	String sql_name = "first_name = ? ";
+	int name_id = 0;
+	String sql_surname = "surname = ? ";
+	int surname_id = 0;
+	String sql_employeeID = "employee_ID = ? ";
+	int employeeid_id = 0;
+	String sql_event_type = "event_type = ? ";
+	int event_type_id = 0;
+	int globalid = 1;
 	
+	if ((name != null && !name.equals("")) || (surname != null && surname.equals("") != true) || (employeeID != null && employeeID.equals("") != true))
+		sql += "where ";
+	if(name != null && !name.equals(""))
+	{
+		sql += sql_name;
+		name_id = globalid++;
+	}
+	
+	if(surname != null && surname.equals("") != true)
+	{
+		if(globalid > 1)
+			sql += "AND ";
+		sql += sql_surname;
+		surname_id = globalid++;
+	}
+	
+	if(employeeID != null && employeeID.equals("") != true)
+	{
+		if(globalid > 1)
+			sql += "AND ";
+		sql += sql_employeeID;
+		employeeid_id = globalid++;
+	}
+	try {
+		PreparedStatement prst = myConnection.prepareStatement(sql + " order by employee_id");
+		if(name_id > 0)
+		{
+			prst.setString(name_id, name);
+		}
+		if(surname_id > 0)
+		{
+			prst.setString(surname_id, surname);
+		}
+		if(employeeid_id > 0)
+		{
+			prst.setString(employeeid_id, employeeID);
+		}
+		ResultSet rs = prst.executeQuery();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		while(rs.next())
+		{
+			results += "\n";
+			String[] rowdata = new String[rsmd.getColumnCount()];
+			for(int i = 0; i < rsmd.getColumnCount(); ++i)
+			{
+				rowdata[i] = rs.getString(i+1);
+			}
+			results += String.format(resultFormatString, (Object[])rowdata);
+		}
+	}
+	catch(SQLException e)
+	{
+		e.printStackTrace();
+	}
 	
 	return results;
 }
@@ -223,28 +286,28 @@ public String getLogs(String name, String surname, String employeeID, String eve
 	}
 	
 	try {
-		PreparedStatement prst = myConnection.prepareStatement(sql);
-		if(name != null && name.equals("") != true)
+		PreparedStatement prst = myConnection.prepareStatement(sql + " group by employee_id ");
+		if(name_id > 0)
 		{
 			prst.setString(name_id, name);
 		}
-		if(surname != null && surname.equals("") != true)
+		if(surname_id > 0)
 		{
 			prst.setString(surname_id, surname);
 		}
-		if(employeeID != null && employeeID.equals("") != true)
+		if(employeeid_id > 0)
 		{
 			prst.setString(employeeid_id, employeeID);
 		}
-		if(eventType != null && eventType.equals("") != true)
+		if(event_type_id > 0)
 		{
 			prst.setString(event_type_id, eventType);
 		}
-		if(beforeDate != null)
+		if(beforedate_id > 0)
 		{
 			prst.setDate(beforedate_id, beforeDate);
 		}
-		if(afterDate != null)
+		if(afterdate_id > 0)
 		{
 			prst.setDate(afterdate_id, afterDate);
 		}
