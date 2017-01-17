@@ -47,7 +47,7 @@ public DBConnection(String address, String password){
 		   System.exit(1);
 		}
 	try {
-		myConnection = DriverManager.getConnection("jdbc:oracle:thin//"+address+":1521:orakyl", "bd2_project", password);
+		myConnection = DriverManager.getConnection("jdbc:oracle:thin:@"+address+":1521:orakyl", "bd2_project", password);
 		}
 		catch(SQLException ex)
 		{
@@ -119,6 +119,26 @@ public String[] getEventTypes()
 		ex.printStackTrace();
 	}
 	return eventTypes;
+}
+
+public boolean insertEmployee(String employeeID, String firstName, String surname, String PESEL, String Department_ID)
+{
+	String sql = "INSERT INTO employee (Employee_ID, FIRST_NAME, Surname, PESEL, Department_ID) values (?, ?, ?, ?, ?)";
+	boolean toReturn = false;
+	try{
+		PreparedStatement prst = myConnection.prepareStatement(sql);
+		prst.setString(1, employeeID);
+		prst.setString(2, firstName);
+		prst.setString(3, surname);
+		prst.setString(4, PESEL);
+		prst.setString(5, Department_ID);
+		toReturn = prst.executeUpdate() == 1;
+	}
+	catch(SQLException e)
+	{
+		e.printStackTrace();
+	}
+	return toReturn;
 }
 
 public String getLogs(String name, String surname, String employeeID, String loggerID, Date afterDate, Date beforeDate, boolean possibleError)
