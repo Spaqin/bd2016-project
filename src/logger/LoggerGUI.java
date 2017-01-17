@@ -6,12 +6,16 @@ package logger;
 import java.awt.Choice;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import utils.DBConnection;
 
 /**
  * @author x
@@ -21,12 +25,22 @@ public class LoggerGUI
 
 	private JFrame frame;
 	private JTextField txtIdPrac;
-
+	private static DBConnection dbc;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args)
 	{
+		String help = "usage: <db ip> <logger id>";
+		if(args.length != 2)
+		{
+			System.out.println(help);
+			System.exit(1);
+		}
+		dbc = new DBConnection(args[0]);
+		if(!dbc.loggerExists(Integer.valueOf(args[1])))
+			System.exit(2);
+		
 		EventQueue.invokeLater(new Runnable()
 		{
 			public void run()
@@ -88,6 +102,22 @@ public class LoggerGUI
 		txtIdPrac.setColumns(10);
 
 		JButton btnJustDoIt = new JButton("Zatwierdź");
+		btnJustDoIt.addActionListener(new AbstractAction() {
+
+
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = -804237937006436793L;
+
+			@Override
+	        public void actionPerformed(ActionEvent arg0) {
+	             //UPDATE the JTree 
+				System.out.println("dupa");
+	        }
+
+
+	    });
 		btnJustDoIt.setBounds(106, 208, 107, 41);
 		panel.add(btnJustDoIt);
 
