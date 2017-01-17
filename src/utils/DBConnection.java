@@ -215,7 +215,54 @@ public String getEmployees(String name, String surname, String employeeID)
 	return results;
 }
 
-//public String getLoggers(String deptID);
+public boolean removeEmployee(String employeeID)
+{
+	String sql = "delete from employee where employee_id = ?";
+	boolean toReturn = false;
+	try {
+		PreparedStatement prst = myConnection.prepareStatement(sql);
+		prst.setString(1, employeeID);
+		toReturn = prst.executeUpdate() == 1;
+	}
+	catch (SQLException e)
+	{
+		e.printStackTrace();
+	}
+	return toReturn;
+}
+
+public String getLoggers(String loggerID)
+{
+	String sql = "select loggers_id, department_id, department_name from loggers natural join departments ";
+	String results = "ID LOGGERA|ID DEPT-u|     NAZWA DEPT-u|";
+	String resultFormatString = "%10s|%9s|%17s|";
+	String sql_loggerid = " where logger_id = ? ";
+	if(loggerID != null && !loggerID.equals(""))
+		sql += sql_loggerid;
+	try{
+		PreparedStatement prst = myConnection.prepareStatement(sql);
+		if(loggerID != null && !loggerID.equals(""))
+			prst.setString(1, loggerID);
+		ResultSet rs = prst.executeQuery();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		while(rs.next())
+		{
+			results += "\n";
+			String[] rowdata = new String[rsmd.getColumnCount()];
+			for(int i = 0; i < rsmd.getColumnCount(); ++i)
+			{
+				rowdata[i] = rs.getString(i+1);
+			}
+			results += String.format(resultFormatString, (Object[])rowdata);
+		}
+	}
+	catch(SQLException e)
+	{
+		e.printStackTrace();
+	}
+	return results;
+	
+}
 
 public String getLogs(String name, String surname, String employeeID, String eventType, Date afterDate, Date beforeDate, boolean possibleError )
 {
@@ -316,15 +363,6 @@ public String getLogs(String name, String surname, String employeeID, String eve
 		//smacznego
 		ResultSet rs = prst.executeQuery();
 		ResultSetMetaData rsmd = rs.getMetaData();
-//		String[] columns = new String[rsmd.getColumnCount()];
-//		for(int i = 0; i < rsmd.getColumnCount(); ++i)
-//		{
-//			columns[i] = rsmd.getColumnName(i+1);
-//			results += columns[i] + "|";
-//			int type = rsmd.getColumnType(i+1);
-//			resultFormatString += "%" + columns[i].length() + "s|";
-//			
-//		}
 		while(rs.next())
 		{
 			results += "\n";
