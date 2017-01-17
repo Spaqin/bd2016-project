@@ -6,7 +6,6 @@ package adminGUI;
 import java.awt.Choice;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import utils.DBConnection;
 
@@ -16,9 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.JTextArea;
 
@@ -33,7 +30,6 @@ public class AdminGUI
 	private JTextField txtIdPracownika;
 	private JTextField txtDateStart;
 	private JTextField txtDateEnd;
-	private JScrollPane textPanel;
 	private JPanel panel_1;
 	private JButton btnRefresh;
 	private JTextField txtNazwisko;
@@ -78,7 +74,7 @@ public class AdminGUI
 	{
 		dbc = new DBConnection("192.168.43.87");
 		frame = new JFrame();
-		frame.setBounds(100, 100, 823, 580);
+		frame.setBounds(100, 100, 1000, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -130,35 +126,110 @@ public class AdminGUI
 		txtNazwisko.setColumns(10);
 
 		panel_1 = new JPanel();
-		panel_1.setBounds(586, 31, 211, 271);
+		panel_1.setBounds(586, 10, 210, 100);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
 		JButton btnZarzdzajPracownikami = new JButton(
 				"Zarz\u0105dzaj pracownikami");
-		btnZarzdzajPracownikami.setBounds(0, 12, 199, 23);
+		btnZarzdzajPracownikami.setBounds(0, 0, 200, 20);
 		panel_1.add(btnZarzdzajPracownikami);
+		btnZarzdzajPracownikami.addActionListener(new AbstractAction() {
 
+
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = -804233322006333793L;
+
+			@Override
+	        public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							ManageEmploees frame = new ManageEmploees();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+	        }
+
+
+	    });
+		
 		JButton btnZarzdzajDepartamentami = new JButton(
 				"Zarz\u0105dzaj departamentami");
-		btnZarzdzajDepartamentami.setBounds(0, 46, 199, 23);
+		btnZarzdzajDepartamentami.setBounds(0, 25, 200, 20);
 		panel_1.add(btnZarzdzajDepartamentami);
+		btnZarzdzajDepartamentami.addActionListener(new AbstractAction() {
+
+
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = -804233388811333793L;
+
+			@Override
+	        public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							ManageDeps frame = new ManageDeps();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+	        }
+
+
+	    });
 
 		JButton btnZarzdzajLoggerami = new JButton("Zarz\u0105dzaj loggerami");
-		btnZarzdzajLoggerami.setBounds(0, 80, 199, 23);
+		btnZarzdzajLoggerami.setBounds(0, 50, 200, 20);
 		panel_1.add(btnZarzdzajLoggerami);
+		btnZarzdzajLoggerami.addActionListener(new AbstractAction() {
+
+
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = -804233388811333793L;
+
+			@Override
+	        public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							ManageLoggers frame = new ManageLoggers();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+	        }
+
+
+	    });
 
 		btnRefresh = new JButton("Odśwież");
-		btnRefresh.setBounds(0, 147, 199, 23);
+		btnRefresh.setBounds(0, 75, 200, 20);
 		panel_1.add(btnRefresh);
 		
 		JPanel outJPanel = new JPanel();
-		outJPanel.setBounds(6, 90, 550, 450);
+		outJPanel.setBounds(6, 110, 900, 600);
 		frame.getContentPane().add(outJPanel);
 
 				outTextArea = new JTextArea(16, 58);
 				outTextArea.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
-				outTextArea.setBounds(0, 0, 550, 440);
+				outTextArea.setBounds(0, 0, 900, 600);
 				outJPanel.add(outTextArea);
 		btnRefresh.addActionListener(new AbstractAction() {
 
