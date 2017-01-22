@@ -36,7 +36,7 @@ public class AdminGUI
 	private JPanel panel_1;
 	private JButton btnRefresh;
 	private JTextField txtNazwisko;
-	private DBConnection dbc;
+	private static DBConnection dbc;
 	private JCheckBox chckbxTylkoLogiMoliwie;
 	private JTextArea outTextArea;
 
@@ -45,6 +45,13 @@ public class AdminGUI
 	 */
 	public static void main(String[] args)
 	{
+		if(args.length != 2)
+		{
+			System.out.print("usage: admingui.java <database server IP> <db password>");
+			System.exit(1);
+		}
+		dbc = new DBConnection(args[0], args[1]);
+
 		EventQueue.invokeLater(new Runnable()
 		{
 			public void run()
@@ -75,7 +82,7 @@ public class AdminGUI
 	 */
 	private void initialize()
 	{
-		dbc = new DBConnection("192.168.43.87");
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -244,17 +251,24 @@ public class AdminGUI
 
 			@Override
 	        public void actionPerformed(ActionEvent arg0) {
+				Date afterDate = null;
+				Date beforeDate = null;
+				if(txtDateStart.getText() != "")
+				{
 				String[] rzeczy = txtDateStart.getText().split("-");
 						int year = Integer.valueOf(rzeczy[0]);
 						int month = Integer.valueOf(rzeczy[1]);
 						int day = Integer.valueOf(rzeczy[2]);
-						Date afterDate = new Date(year, month, day);
-
-				rzeczy = txtDateStart.getText().split("-");
-						year = Integer.valueOf(rzeczy[0]);
-						month = Integer.valueOf(rzeczy[1]);
-						day = Integer.valueOf(rzeczy[2]);
-						Date beforeDate = new Date(year, month, day);
+						afterDate = new Date(year, month, day);
+				}
+				if(txtDateEnd.getText() != "")
+				{
+				String[] rzeczy = txtDateEnd.getText().split("-");
+						int year = Integer.valueOf(rzeczy[0]);
+						int month = Integer.valueOf(rzeczy[1]);
+						int day = Integer.valueOf(rzeczy[2]);
+						beforeDate = new Date(year, month, day);
+				}
 	            outTextArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), null, afterDate, beforeDate, chckbxTylkoLogiMoliwie.isSelected())); 
 				//UPDATE the JTree 
 				
