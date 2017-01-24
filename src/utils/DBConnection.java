@@ -166,7 +166,7 @@ public class DBConnection {
 	public String getEmployees(String name, String surname, String employeeID)
 	{
 		String columnNames = "ID PRACOWNIKA|        IMIĘ|    NAZWISKO|      PESEL|ID DEPT-u|     NAZWA DEPT-u|OSTATNIE ZDARZENIE|";
-		String resultFormatString = "%13s|%12s|%12s|%11s|%9s|%17s|%16s|";
+		String resultFormatString = "%13s|%12s|%12s|%11s|%9s|%17s|%18s|";
 		String results = columnNames;
 		String sql = "select employee_id, first_name, surname, pesel, department_id, name, last_event_type from employee natural join department ";
 		String sql_name = "first_name = ? ";
@@ -240,11 +240,15 @@ public class DBConnection {
 	public boolean removeEmployee(String employeeID)
 	{
 		String sql = "delete from employee where employee_id = ?";
+		String sql_logs = "delete from logs where employee_id = ?";
 		boolean toReturn = false;
 		try {
-			PreparedStatement prst = myConnection.prepareStatement(sql);
+			PreparedStatement prst = myConnection.prepareStatement(sql_logs);
+			PreparedStatement prst2 = myConnection.prepareStatement(sql);
 			prst.setString(1, employeeID);
-			toReturn = prst.executeUpdate() == 1;
+			prst2.setString(1, employeeID);
+			prst.executeUpdate();
+			toReturn = prst2.executeUpdate() == 1;
 		}
 		catch (SQLException e)
 		{
@@ -257,13 +261,16 @@ public class DBConnection {
 	{
 		String sql_deptlogger = "delete from dept_logger where logger_id = ?";
 		String sql_logger ="delete from logger where logger_id = ?";
+		String sql_log = "delete from event_log where logger_id = ?";
 		boolean toReturn = false;
 		try {
+			PreparedStatement prst_logs = myConnection.prepareStatement(sql_log);
+			prst_logs.setString(1, loggerID);
 			PreparedStatement prst_connections = myConnection.prepareStatement(sql_deptlogger);
 			prst_connections.setString(1, loggerID);
 			PreparedStatement prst_loggers = myConnection.prepareStatement(sql_logger);
 			prst_loggers.setString(1, loggerID);
-			
+			prst_logs.executeUpdate();
 			prst_connections.executeUpdate();
 			toReturn = prst_loggers.executeUpdate() == 1;
 		}
@@ -277,10 +284,18 @@ public class DBConnection {
 	public boolean removeDepartment(String deptID)
 	{
 		String sql = "delete from department where department_id = ?";
+		String sql_emps = "delete from employee where department_id = ?";
+		String sql_conns = "delete from dept_logger where department_id = ?";
 		boolean toReturn = false;
 		try {
+			PreparedStatement prst_conns = myConnection.prepareStatement(sql_conns);
+			prst_conns.setString(1, deptID);
+			PreparedStatement prst_emps = myConnection.prepareStatement(sql_emps);
+			prst_emps.setString(1, deptID);
 			PreparedStatement prst = myConnection.prepareStatement(sql);
 			prst.setString(1, deptID);
+			prst_conns.executeUpdate();
+			prst_emps.executeUpdate();
 			toReturn = prst.executeUpdate() == 1;
 		}
 		catch (SQLException e)
@@ -449,7 +464,7 @@ public class DBConnection {
 	public String getLogs(String name, String surname, String employeeID, String eventType, Date afterDate, Date beforeDate, boolean possibleError )
 	{
 		String columnNames = "ID PRACOWNIKA|        IMIĘ|    NAZWISKO|      PESEL|ID DEPT-u|OSTATNIE ZDARZENIE| ID LOGU|       DATA I GODZINA|BŁĄD|       ZDARZENIE|ID LOGGERA|";
-		String resultFormatString = "%13s|%12s|%12s|%11s|%9s|%18s|%8s|%21s|%4s|%16s|%10s|";
+		String resultFormatString = "%13s|%12s|%12s|%11s|%9s|%18s|%8s|%21s|%4s|%18s|%10s|";
 		String results = columnNames;
 		String sql = "select * from employee natural join event_log ";
 		String sql_name = "first_name = ? ";
@@ -461,9 +476,9 @@ public class DBConnection {
 		String sql_event_type = "event_type = ? ";
 		int event_type_id = 0;
 		String sql_possible_error = "possible_error = 1 ";
-		String sql_after_date = "log_date > TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') ";
+		String sql_after_date = "log_date > ? ";
 		int afterdate_id = 0;
-		String sql_before_date = "log_date < TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') ";
+		String sql_before_date = "log_date < ? ";
 		int beforedate_id = 0;
 		
 		int globalid = 1;
@@ -515,7 +530,7 @@ public class DBConnection {
 			sql += sql_after_date;
 			afterdate_id = globalid++;
 		}
-		
+		String prstr = "none";
 		try {
 			PreparedStatement prst = myConnection.prepareStatement(sql + " order by employee_id ");
 			if(name_id > 0)
@@ -536,13 +551,14 @@ public class DBConnection {
 			}
 			if(beforedate_id > 0)
 			{
-				prst.setDate(beforedate_id, beforeDate);
+				prst.setString(beforedate_id, beforeDate.toString());
 			}
 			if(afterdate_id > 0)
 			{
-				prst.setDate(afterdate_id, afterDate);
+				prst.setString(afterdate_id, afterDate.toString());
 			}
 			//smacznego
+			prstr = prst.toString();
 			ResultSet rs = prst.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
 			while(rs.next())
@@ -559,6 +575,7 @@ public class DBConnection {
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			System.out.println(prstr);
 		}
 		
 		return results;
