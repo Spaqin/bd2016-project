@@ -7,6 +7,7 @@ import java.awt.Choice;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -123,6 +124,7 @@ public class LoggerGUI
 	        public void actionPerformed(ActionEvent arg0) {
 	             //UPDATE the JTree 
 				//dbc.addEvent(date, employeeID, loggerID, eventType)
+
 				java.util.Date currentDate = new java.util.Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 				boolean possibleError = dbc.addEvent(sdf.format(currentDate), txtIdPrac.getText(), Integer.parseInt(loggerID), typLogu.getSelectedItem());

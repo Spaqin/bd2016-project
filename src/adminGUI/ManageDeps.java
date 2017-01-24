@@ -1,7 +1,6 @@
 package adminGUI;
 
-import java.awt.EventQueue;
-import java.awt.TextArea;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
@@ -29,7 +28,7 @@ public class ManageDeps extends JFrame {
 	private JTextField txtId;
 	private JButton btnModify;
 	private JTextField txtId_1;
-	private DBConnection dbc;
+	//private DBConnection dbc;
 	private JTextArea textArea;
 
 
@@ -37,7 +36,7 @@ public class ManageDeps extends JFrame {
 	 * Create the frame.
 	 */
 	public ManageDeps(final DBConnection dbc) {
-		this.dbc = dbc;
+		//this.dbc = dbc;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 650, 300);
 		contentPane = new JPanel();
