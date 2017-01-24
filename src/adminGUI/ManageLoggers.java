@@ -1,15 +1,22 @@
 package adminGUI;
 
 import java.awt.EventQueue;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import utils.DBConnection;
+
 import javax.swing.JTextField;
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+import java.awt.Font;
 
 public class ManageLoggers extends JFrame {
 
@@ -19,15 +26,17 @@ public class ManageLoggers extends JFrame {
 	private static final long serialVersionUID = 1352418070989555154L;
 	private JPanel contentPane;
 	private JTextField txtId;
-	private JButton btnModify;
 	private JTextField txtIdLoggera;
 	private JTextField txtDeptId;
+	private DBConnection dbc;
+	private JTextArea textArea;
 
 
 	/**
 	 * Create the frame.
 	 */
-	public ManageLoggers() {
+	public ManageLoggers(final DBConnection dbc) {
+		this.dbc = dbc;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 650, 300);
 		contentPane = new JPanel();
@@ -48,18 +57,52 @@ public class ManageLoggers extends JFrame {
 		
 		JButton btnWyszukaj = new JButton("Wyszukaj");
 		horizontalBox.add(btnWyszukaj);
+		btnWyszukaj.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 65423611655L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText(dbc.getLoggers(txtId.getText()));
+			}
+		});
 		
 		JButton btnDodajPracownika = new JButton("Dodaj");
 		horizontalBox.add(btnDodajPracownika);
-		
-		btnModify = new JButton("Modyfikuj");
-		horizontalBox.add(btnModify);
+		btnDodajPracownika.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 65427773655L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.addLogger(txtId.getText());
+			}
+		});
 		
 		JButton btnUsuPracownika = new JButton("Usuń Logger");
 		horizontalBox.add(btnUsuPracownika);
+		btnUsuPracownika.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 65423699955L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.removeLoggerAndConnections(txtId.getText());
+			}
+		});
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 70, 600, 200);
+		textArea = new JTextArea();
+		textArea.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
+		textArea.setBounds(10, 70, 600, 500);
 		contentPane.add(textArea);
 		
 		Box horizontalBox_2 = Box.createHorizontalBox();
@@ -82,6 +125,18 @@ public class ManageLoggers extends JFrame {
 		
 		JButton btnDodajPowizanie = new JButton("Dodaj powiązanie");
 		horizontalBox_2.add(btnDodajPowizanie);
+		btnDodajPowizanie.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 65423643655L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.connectLogger(txtIdLoggera.getText(), txtDeptId.getText());
+			}
+		});
 		
 		JButton btnDelConn = new JButton("Usuń powiązanie");
 		horizontalBox_2.add(btnDelConn);

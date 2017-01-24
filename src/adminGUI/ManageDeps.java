@@ -1,11 +1,18 @@
 package adminGUI;
 
 import java.awt.EventQueue;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+
+import utils.DBConnection;
+
 import javax.swing.JTextField;
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -22,12 +29,15 @@ public class ManageDeps extends JFrame {
 	private JTextField txtId;
 	private JButton btnModify;
 	private JTextField txtId_1;
+	private DBConnection dbc;
+	private JTextArea textArea;
 
 
 	/**
 	 * Create the frame.
 	 */
-	public ManageDeps() {
+	public ManageDeps(final DBConnection dbc) {
+		this.dbc = dbc;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 650, 300);
 		contentPane = new JPanel();
@@ -55,12 +65,48 @@ public class ManageDeps extends JFrame {
 		
 		JButton btnWyszukaj = new JButton("Wyszukaj");
 		horizontalBox.add(btnWyszukaj);
+		btnWyszukaj.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -392293978440963827L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText(dbc.getDepartments(txtId.getText(), txtDeptName.getText()));
+			}
+		});
 		
 		JButton btnDodajPracownika = new JButton("Dodaj");
 		horizontalBox.add(btnDodajPracownika);
+		btnDodajPracownika.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 654236655L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.addDepartment(txtId.getText(), txtDeptName.getText());
+			}
+		});
 		
 		btnModify = new JButton("Modyfikuj");
 		horizontalBox.add(btnModify);
+		btnModify.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 654365766L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.updateDepartment(txtId.getText(), txtDeptName.getText());
+			}
+		});
 		
 		Box horizontalBox_1 = Box.createHorizontalBox();
 		horizontalBox_1.setBounds(10, 40, 300, 20);
@@ -75,8 +121,20 @@ public class ManageDeps extends JFrame {
 		
 		JButton btnUsuPracownika = new JButton("Usuń dział");
 		horizontalBox_1.add(btnUsuPracownika);
+		btnUsuPracownika.addActionListener(new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4440535035632433273L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.removeDepartment(txtId_1.getText());
+			}
+		});
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		textArea.setBounds(10, 75, 600, 200);
 		contentPane.add(textArea);
 	}

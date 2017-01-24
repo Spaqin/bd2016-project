@@ -15,6 +15,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+import java.awt.Font;
 
 public class ManageEmploees extends JFrame {
 
@@ -39,7 +40,7 @@ public class ManageEmploees extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ManageEmploees(DBConnection dbc) {
+	public ManageEmploees(final DBConnection dbc) {
 		this.dbc = dbc;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 300);
@@ -100,6 +101,13 @@ public class ManageEmploees extends JFrame {
 		
 		JButton btnUsuPracownika = new JButton("Usuń Pracownika");
 		horizontalBox_1.add(btnUsuPracownika);
+		btnUsuPracownika.addActionListener(new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.removeEmployee(txtId_1.getText());
+			}
+		});
 		
 		Box verticalBox = Box.createVerticalBox();
 		verticalBox.setBounds(630, 10, 120, 80);
@@ -149,6 +157,7 @@ public class ManageEmploees extends JFrame {
 		});
 		
 		textArea = new JTextArea();
+		textArea.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
 		textArea.setBounds(10, 75, 600, 200);
 		contentPane.add(textArea);
 	}
