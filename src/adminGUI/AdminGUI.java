@@ -8,6 +8,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import utils.DBConnection;
 
@@ -266,19 +268,21 @@ public class AdminGUI
 				Date beforeDate = null;
 				if(!txtDateStart.getText().equals(""))
 				{
-				String[] rzeczy = txtDateStart.getText().split("-");
-						int year = Integer.valueOf(rzeczy[0]);
-						int month = Integer.valueOf(rzeczy[1]);
-						int day = Integer.valueOf(rzeczy[2]);
-						afterDate = new Date(year, month, day);
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					try {
+						afterDate = new Date(df.parse(txtDateStart.getText()).getTime());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 				}
 				if(!txtDateEnd.getText().equals(""))
 				{
-				String[] rzeczy = txtDateEnd.getText().split("-");
-						int year = Integer.valueOf(rzeczy[0]);
-						int month = Integer.valueOf(rzeczy[1]);
-						int day = Integer.valueOf(rzeczy[2]);
-						beforeDate = new Date(year, month, day);
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					try {
+						beforeDate = new Date(df.parse(txtDateEnd.getText()).getTime());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 				}
 	            outTextArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), null, afterDate, beforeDate, chckbxTylkoLogiMoliwie.isSelected())); 
 				//UPDATE the JTree 

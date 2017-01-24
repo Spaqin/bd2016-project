@@ -482,7 +482,7 @@ public class DBConnection {
 		int beforedate_id = 0;
 		
 		int globalid = 1;
-		if ((name != null && !name.equals("")) || (surname != null && surname.equals("") != true) || (employeeID != null && employeeID.equals("") != true) || (eventType != null && eventType.equals("") != true) || possibleError != false)
+		if ((name != null && !name.equals("")) || (surname != null && surname.equals("") != true) || (employeeID != null && employeeID.equals("") != true) || (eventType != null && eventType.equals("") != true) || possibleError != false || beforeDate != null || afterDate != null)
 			sql += "where ";
 		if(name != null && !name.equals(""))
 		{
@@ -551,11 +551,11 @@ public class DBConnection {
 			}
 			if(beforedate_id > 0)
 			{
-				prst.setString(beforedate_id, beforeDate.toString());
+				prst.setDate(beforedate_id, beforeDate);
 			}
 			if(afterdate_id > 0)
 			{
-				prst.setString(afterdate_id, afterDate.toString());
+				prst.setDate(afterdate_id, afterDate);
 			}
 			//smacznego
 			prstr = prst.toString();
