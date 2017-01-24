@@ -141,12 +141,16 @@ public class LoggerGUI
 		btnJustDoIt.setBounds(106, 208, 107, 41);
 		panel.add(btnJustDoIt);
 
-		lblLampka = new JLabel("Lampka");
-		lblLampka.setBounds(308, 235, 46, 14);
+		lblLampka = new JLabel("");
+		lblLampka.setBounds(308, 235, 200, 20);
 		panel.add(lblLampka);
 		
 		JLabel lblIdPracownika = new JLabel("Id Pracownika:");
 		lblIdPracownika.setBounds(220, 54, 150, 15);
 		panel.add(lblIdPracownika);
+		
+		JLabel lblStatusLogu = new JLabel("Status logu:");
+		lblStatusLogu.setBounds(308, 208, 200, 15);
+		panel.add(lblStatusLogu);
 	}
 }
