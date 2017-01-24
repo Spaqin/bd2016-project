@@ -168,7 +168,7 @@ public class AdminGUI
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							ManageEmploees frame = new ManageEmploees();
+							ManageEmploees frame = new ManageEmploees(dbc);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();

@@ -1,6 +1,8 @@
 package adminGUI;
 
+import utils.DBConnection;
 import java.awt.EventQueue;
+
 import java.awt.event.ActionEvent;
 import java.sql.Date;
 
@@ -32,11 +34,13 @@ public class ManageEmploees extends JFrame {
 	private JLabel lblImi;
 	private JLabel lblNazwisko;
 	private JLabel lblNewLabel;
-
+	private JTextArea textArea;
+	private DBConnection dbc;
 	/**
 	 * Create the frame.
 	 */
-	public ManageEmploees() {
+	public ManageEmploees(DBConnection dbc) {
+		this.dbc = dbc;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 300);
 		contentPane = new JPanel();
@@ -115,23 +119,7 @@ public class ManageEmploees extends JFrame {
 	        public void actionPerformed(ActionEvent arg0) {
 				Date afterDate = null;
 				Date beforeDate = null;
-				if(!txtDateStart.getText().equals(""))
-				{
-				String[] rzeczy = txtDateStart.getText().split("-");
-						int year = Integer.valueOf(rzeczy[0]);
-						int month = Integer.valueOf(rzeczy[1]);
-						int day = Integer.valueOf(rzeczy[2]);
-						afterDate = new Date(year, month, day);
-				}
-				if(!txtDateEnd.getText().equals(""))
-				{
-				String[] rzeczy = txtDateEnd.getText().split("-");
-						int year = Integer.valueOf(rzeczy[0]);
-						int month = Integer.valueOf(rzeczy[1]);
-						int day = Integer.valueOf(rzeczy[2]);
-						beforeDate = new Date(year, month, day);
-				}
-	            textArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), null, afterDate, beforeDate, chckbxTylkoLogiMoliwie.isSelected())); 
+	            textArea.setText(dbc.getEmployees(txtImie.getText(), txtNazwisko.getText(), txtId.getText()));
 				//UPDATE the JTree 
 				
 	        }
@@ -141,11 +129,26 @@ public class ManageEmploees extends JFrame {
 		
 		JButton btnDodajPracownika = new JButton("Dodaj");
 		verticalBox.add(btnDodajPracownika);
+		btnDodajPracownika.addActionListener(new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.insertEmployee(txtId.getText(), txtImie.getText(), txtNazwisko.getText(), txtPesel.getText(), txtDeptID.getText());
+			}
+		});
 		
 		btnModify = new JButton("Modyfikuj");
 		verticalBox.add(btnModify);
 		
-		JTextArea textArea = new JTextArea();
+		btnModify.addActionListener(new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dbc.updateEmployee(txtId.getText(), txtImie.getText(), txtNazwisko.getText(), txtPesel.getText(), txtDeptID.getText());
+			}
+		});
+		
+		textArea = new JTextArea();
 		textArea.setBounds(10, 75, 600, 200);
 		contentPane.add(textArea);
 	}
