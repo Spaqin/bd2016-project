@@ -41,6 +41,7 @@ public class AdminGUI
 	private static DBConnection dbc;
 	private JCheckBox chckbxTylkoLogiMoliwie;
 	private JTextArea outTextArea;
+	private Choice choice_TypZdarzenia;
 
 	/**
 	 * Launch the application.
@@ -120,8 +121,12 @@ public class AdminGUI
 						horizontalBox.add(txtIdPracownika);
 						txtIdPracownika.setColumns(10);
 						
-								Choice choice_TypZdarzenia = new Choice();
+								choice_TypZdarzenia = new Choice();
 								horizontalBox.add(choice_TypZdarzenia);
+								String[] loggsType = dbc.getEventTypes();
+								choice_TypZdarzenia.add("");
+								for(int i = 0; i< loggsType.length;i++)
+									choice_TypZdarzenia.add(loggsType[i]);
 						
 						Box horizontalBox_1 = Box.createHorizontalBox();
 						horizontalBox_1.setBounds(5, 30, 550, 20);
@@ -282,7 +287,7 @@ public class AdminGUI
 						e.printStackTrace();
 					}
 				}
-	            outTextArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), null, afterDate, beforeDate, chckbxTylkoLogiMoliwie.isSelected())); 
+	            outTextArea.setText(dbc.getLogs(txtImie.getText(), txtNazwisko.getText(), txtIdPracownika.getText(), choice_TypZdarzenia.getSelectedItem(), afterDate, beforeDate, chckbxTylkoLogiMoliwie.isSelected())); 
 				//UPDATE the JTree 
 				
 	        }
