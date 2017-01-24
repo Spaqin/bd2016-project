@@ -26,6 +26,7 @@ public class LoggerGUI
 	private JFrame frame;
 	private JTextField txtIdPrac;
 	private static DBConnection dbc;
+	private static String loggerID;
 	/**
 	 * Launch the application.
 	 */
@@ -37,6 +38,7 @@ public class LoggerGUI
 			System.out.println(help);
 			System.exit(1);
 		}
+		loggerID = args[1];
 		dbc = new DBConnection(args[0]);
 		if(!dbc.loggerExists(Integer.valueOf(args[1])))
 			System.exit(2);
@@ -86,10 +88,11 @@ public class LoggerGUI
 		lblLoggerId.setBounds(10, 11, 84, 20);
 		panel.add(lblLoggerId);
 
-		JLabel label = new JLabel("< z args. >");
+		JLabel label = new JLabel("");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		label.setBounds(263, 11, 91, 20);
 		panel.add(label);
+		label.setText(loggerID);
 
 		Choice choice = new Choice();
 		choice.setBounds(10, 49, 203, 20);

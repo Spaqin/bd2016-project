@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.JLabel;
 
 public class ManageDeps extends JFrame {
 
@@ -38,14 +39,18 @@ public class ManageDeps extends JFrame {
 		horizontalBox.setBounds(10, 10, 600, 20);
 		contentPane.add(horizontalBox);
 		
+		JLabel lblId = new JLabel("Id działu:");
+		horizontalBox.add(lblId);
+		
 		txtId = new JTextField();
 		horizontalBox.add(txtId);
-		txtId.setText("id");
 		txtId.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Nazwa działu:");
+		horizontalBox.add(lblNewLabel);
 		
 		txtDeptName = new JTextField();
 		horizontalBox.add(txtDeptName);
-		txtDeptName.setText("Nazwa");
 		txtDeptName.setColumns(10);
 		
 		JButton btnWyszukaj = new JButton("Wyszukaj");
@@ -61,17 +66,18 @@ public class ManageDeps extends JFrame {
 		horizontalBox_1.setBounds(10, 40, 300, 20);
 		contentPane.add(horizontalBox_1);
 		
+		JLabel lblNewLabel_1 = new JLabel("Id:");
+		horizontalBox_1.add(lblNewLabel_1);
+		
 		txtId_1 = new JTextField();
-		txtId_1.setText("id");
 		horizontalBox_1.add(txtId_1);
 		txtId_1.setColumns(10);
 		
-		JButton btnUsuPracownika = new JButton("Usuń departament");
+		JButton btnUsuPracownika = new JButton("Usuń dział");
 		horizontalBox_1.add(btnUsuPracownika);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(10, 75, 600, 200);
 		contentPane.add(textArea);
 	}
-
 }

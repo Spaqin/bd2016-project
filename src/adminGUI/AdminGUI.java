@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.JTextArea;
+import javax.swing.Box;
+import javax.swing.JLabel;
 
 /**
  * @author x
@@ -89,51 +91,60 @@ public class AdminGUI
 		frame.getContentPane().setLayout(null);
 
 		JPanel panel_filtry = new JPanel();
-		panel_filtry.setBorder(new TitledBorder(null, "JPanel title",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_filtry.setBounds(6, 11, 531, 67);
 		frame.getContentPane().add(panel_filtry);
 		panel_filtry.setLayout(null);
-
-		txtImie = new JTextField();
-		txtImie.setText("imie");
-		txtImie.setBounds(20, 11, 100, 20);
-		panel_filtry.add(txtImie);
-		txtImie.setColumns(10);
-
-		txtIdPracownika = new JTextField();
-		txtIdPracownika.setText("id pracownika");
-		txtIdPracownika.setBounds(257, 11, 86, 20);
-		panel_filtry.add(txtIdPracownika);
-		txtIdPracownika.setColumns(10);
-
-		Choice choice_TypZdarzenia = new Choice();
-		choice_TypZdarzenia.setBounds(380, 11, 141, 20);
-		panel_filtry.add(choice_TypZdarzenia);
-
-		txtDateStart = new JTextField();
-		txtDateStart.setText("date start");
-		txtDateStart.setBounds(20, 43, 80, 20);
-		panel_filtry.add(txtDateStart);
-		txtDateStart.setColumns(10);
-
-		txtDateEnd = new JTextField();
-		txtDateEnd.setText("date end");
-		txtDateEnd.setBounds(132, 43, 80, 20);
-		panel_filtry.add(txtDateEnd);
-		txtDateEnd.setColumns(10);
-
-		chckbxTylkoLogiMoliwie = new JCheckBox(
-				"tylko logi mo\u017Cliwie b\u0142\u0119dne");
-		chckbxTylkoLogiMoliwie.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		chckbxTylkoLogiMoliwie.setBounds(249, 40, 151, 23);
-		panel_filtry.add(chckbxTylkoLogiMoliwie);
 		
-		txtNazwisko = new JTextField();
-		txtNazwisko.setText("nazwisko");
-		txtNazwisko.setBounds(132, 11, 100, 19);
-		panel_filtry.add(txtNazwisko);
-		txtNazwisko.setColumns(10);
+		Box horizontalBox = Box.createHorizontalBox();
+		horizontalBox.setBounds(5, 5, 550, 20);
+		panel_filtry.add(horizontalBox);
+				
+				JLabel lblImi = new JLabel("Imię:");
+				horizontalBox.add(lblImi);
+		
+				txtImie = new JTextField();
+				horizontalBox.add(txtImie);
+				txtImie.setColumns(10);
+				
+				JLabel lblNazwisko = new JLabel("Nazwisko:");
+				horizontalBox.add(lblNazwisko);
+				
+				txtNazwisko = new JTextField();
+				horizontalBox.add(txtNazwisko);
+				txtNazwisko.setColumns(10);
+						
+						JLabel lblIdPracownika = new JLabel("Id pracownika:");
+						horizontalBox.add(lblIdPracownika);
+				
+						txtIdPracownika = new JTextField();
+						horizontalBox.add(txtIdPracownika);
+						txtIdPracownika.setColumns(10);
+						
+								Choice choice_TypZdarzenia = new Choice();
+								horizontalBox.add(choice_TypZdarzenia);
+						
+						Box horizontalBox_1 = Box.createHorizontalBox();
+						horizontalBox_1.setBounds(5, 30, 550, 20);
+						panel_filtry.add(horizontalBox_1);
+								
+								JLabel lblDataOd = new JLabel("Data od:");
+								horizontalBox_1.add(lblDataOd);
+						
+								txtDateStart = new JTextField();
+								horizontalBox_1.add(txtDateStart);
+								txtDateStart.setColumns(10);
+										
+										JLabel lblDo = new JLabel("do:");
+										horizontalBox_1.add(lblDo);
+								
+										txtDateEnd = new JTextField();
+										horizontalBox_1.add(txtDateEnd);
+										txtDateEnd.setColumns(10);
+										
+												chckbxTylkoLogiMoliwie = new JCheckBox(
+														"tylko logi mo\u017Cliwie b\u0142\u0119dne");
+												horizontalBox_1.add(chckbxTylkoLogiMoliwie);
+												chckbxTylkoLogiMoliwie.setFont(new Font("Tahoma", Font.PLAIN, 9));
 
 		panel_1 = new JPanel();
 		panel_1.setBounds(586, 10, 210, 100);
@@ -253,7 +264,7 @@ public class AdminGUI
 	        public void actionPerformed(ActionEvent arg0) {
 				Date afterDate = null;
 				Date beforeDate = null;
-				if(txtDateStart.getText() != "")
+				if(!txtDateStart.getText().equals(""))
 				{
 				String[] rzeczy = txtDateStart.getText().split("-");
 						int year = Integer.valueOf(rzeczy[0]);
@@ -261,7 +272,7 @@ public class AdminGUI
 						int day = Integer.valueOf(rzeczy[2]);
 						afterDate = new Date(year, month, day);
 				}
-				if(txtDateEnd.getText() != "")
+				if(!txtDateEnd.getText().equals(""))
 				{
 				String[] rzeczy = txtDateEnd.getText().split("-");
 						int year = Integer.valueOf(rzeczy[0]);

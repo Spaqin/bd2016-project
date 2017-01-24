@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.JLabel;
 
 public class ManageLoggers extends JFrame {
 
@@ -38,9 +39,11 @@ public class ManageLoggers extends JFrame {
 		horizontalBox.setBounds(10, 10, 600, 20);
 		contentPane.add(horizontalBox);
 		
+		JLabel lblNewLabel = new JLabel("Id:");
+		horizontalBox.add(lblNewLabel);
+		
 		txtId = new JTextField();
 		horizontalBox.add(txtId);
-		txtId.setText("id");
 		txtId.setColumns(10);
 		
 		JButton btnWyszukaj = new JButton("Wyszukaj");
@@ -60,17 +63,21 @@ public class ManageLoggers extends JFrame {
 		contentPane.add(textArea);
 		
 		Box horizontalBox_2 = Box.createHorizontalBox();
-		horizontalBox_2.setBounds(10, 40, 500, 20);
+		horizontalBox_2.setBounds(10, 40, 600, 20);
 		contentPane.add(horizontalBox_2);
 		
+		JLabel lblNewLabel_1 = new JLabel("Id loggera:");
+		horizontalBox_2.add(lblNewLabel_1);
+		
 		txtIdLoggera = new JTextField();
-		txtIdLoggera.setText("id loggera");
 		horizontalBox_2.add(txtIdLoggera);
 		txtIdLoggera.setColumns(10);
 		
+		JLabel lblNewLabel_2 = new JLabel("Id działu:");
+		horizontalBox_2.add(lblNewLabel_2);
+		
 		txtDeptId = new JTextField();
 		horizontalBox_2.add(txtDeptId);
-		txtDeptId.setText("id działu");
 		txtDeptId.setColumns(10);
 		
 		JButton btnDodajPowizanie = new JButton("Dodaj powiązanie");
