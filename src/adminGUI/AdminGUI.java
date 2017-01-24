@@ -198,7 +198,7 @@ public class AdminGUI
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							ManageDeps frame = new ManageDeps();
+							ManageDeps frame = new ManageDeps(dbc);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -227,7 +227,7 @@ public class AdminGUI
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							ManageLoggers frame = new ManageLoggers();
+							ManageLoggers frame = new ManageLoggers(dbc);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
