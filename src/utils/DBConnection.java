@@ -240,7 +240,7 @@ public class DBConnection {
 	public boolean removeEmployee(String employeeID)
 	{
 		String sql = "delete from employee where employee_id = ?";
-		String sql_logs = "delete from logs where employee_id = ?";
+		String sql_logs = "delete from event_log where employee_id = ?";
 		boolean toReturn = false;
 		try {
 			PreparedStatement prst = myConnection.prepareStatement(sql_logs);
