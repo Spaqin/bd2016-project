@@ -8,6 +8,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -123,8 +124,8 @@ public class LoggerGUI
 	             //UPDATE the JTree 
 				//dbc.addEvent(date, employeeID, loggerID, eventType)
 				java.util.Date currentDate = new java.util.Date();
-				Date currentDateSQL = new Date(currentDate.getTime());
-				boolean possibleError = dbc.addEvent(currentDateSQL, txtIdPrac.getText(), Integer.parseInt(loggerID), typLogu.getSelectedItem());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				boolean possibleError = dbc.addEvent(sdf.format(currentDate), txtIdPrac.getText(), Integer.parseInt(loggerID), typLogu.getSelectedItem());
 				if(possibleError)
 				{
 					lblLampka.setText("Możliwy Błąd");
