@@ -248,7 +248,7 @@ public class AdminGUI
 		outJPanel.setBounds(6, 110, 900, 600);
 		frame.getContentPane().add(outJPanel);
 
-				outTextArea = new JTextArea(16, 58);
+				outTextArea = new JTextArea(200, 58);
 				outTextArea.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
 				outTextArea.setBounds(0, 0, 900, 600);
 				outJPanel.add(outTextArea);
