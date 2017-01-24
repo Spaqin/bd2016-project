@@ -63,13 +63,13 @@ public class DBConnection {
 	 * @param eventType
 	 * @return czy był błąd
 	 */
-	public boolean addEvent(Date date, String employeeID, int loggerID, String eventType)
+	public boolean addEvent(Timestamp date, String employeeID, int loggerID, String eventType)
 	{
 		String insert_sql = "insert into Event_Log (LOG_DATE, EVENT_TYPE, LOGGER_ID, EMPLOYEE_ID) values (TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ?, ?, ?)";
 		String getlast_sql = "select * from event_log where log_id in (select max(log_id) from event_log)";
 		try { 
 			PreparedStatement prst = myConnection.prepareStatement(insert_sql);
-			prst.setDate(1, date);
+			prst.setTimestamp(1, date);
 			prst.setString(2, eventType);
 			prst.setInt(3, loggerID);
 			prst.setString(4, employeeID);
