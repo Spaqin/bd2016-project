@@ -307,12 +307,14 @@ public class DBConnection {
 	
 	public String getLoggers(String loggerID)
 	{
-		String sql = "select logger_id, department_id, name from logger natural join dept_logger natural join department order by logger_id, department_id";
+		String sql = "select logger_id, department_id, name from logger natural join dept_logger natural join department ";
+		String sql_order = " order by logger_id, department_id";
 		String results = "ID LOGGERA|ID DEPT-u|             NAZWA DEPT-u|";
 		String resultFormatString = "%10s|%9s|%25s|";
 		String sql_loggerid = " where logger_id = ? ";
 		if(loggerID != null && !loggerID.equals(""))
 			sql += sql_loggerid;
+		sql += sql_order;
 		try{
 			PreparedStatement prst = myConnection.prepareStatement(sql);
 			if(loggerID != null && !loggerID.equals(""))
