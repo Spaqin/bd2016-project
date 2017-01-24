@@ -7,7 +7,6 @@ import java.awt.Choice;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.sql.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -122,9 +121,9 @@ public class LoggerGUI
 	        public void actionPerformed(ActionEvent arg0) {
 	             //UPDATE the JTree 
 				//dbc.addEvent(date, employeeID, loggerID, eventType)
-				java.util.Date currentDate = new java.util.Date();
-				Date currentDateSQL = new Date(currentDate.getTime());
-				boolean possibleError = dbc.addEvent(currentDateSQL, txtIdPrac.getText(), Integer.parseInt(loggerID), typLogu.getSelectedItem());
+				java.util.Date date = new java.util.Date();
+				java.sql.Timestamp currentDate = new java.sql.Timestamp(date.getTime());
+				boolean possibleError = dbc.addEvent(currentDate, txtIdPrac.getText(), Integer.parseInt(loggerID), typLogu.getSelectedItem());
 				if(possibleError)
 				{
 					lblLampka.setText("Możliwy Błąd");
