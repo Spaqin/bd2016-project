@@ -307,12 +307,14 @@ public class DBConnection {
 	
 	public String getLoggers(String loggerID)
 	{
-		String sql = "select logger_id, department_id, name from logger natural join dept_logger natural join department order by logger_id, department_id";
+		String sql = "select logger_id, department_id, name from logger natural join dept_logger natural join department ";
+		String sql_order = " order by logger_id, department_id";
 		String results = "ID LOGGERA|ID DEPT-u|             NAZWA DEPT-u|";
 		String resultFormatString = "%10s|%9s|%25s|";
 		String sql_loggerid = " where logger_id = ? ";
 		if(loggerID != null && !loggerID.equals(""))
 			sql += sql_loggerid;
+		sql += sql_order;
 		try{
 			PreparedStatement prst = myConnection.prepareStatement(sql);
 			if(loggerID != null && !loggerID.equals(""))
@@ -482,7 +484,7 @@ public class DBConnection {
 		int beforedate_id = 0;
 		
 		int globalid = 1;
-		if ((name != null && !name.equals("")) || (surname != null && surname.equals("") != true) || (employeeID != null && employeeID.equals("") != true) || (eventType != null && eventType.equals("") != true) || possibleError != false)
+		if ((name != null && !name.equals("")) || (surname != null && surname.equals("") != true) || (employeeID != null && employeeID.equals("") != true) || (eventType != null && eventType.equals("") != true) || possibleError != false || beforeDate != null || afterDate != null)
 			sql += "where ";
 		if(name != null && !name.equals(""))
 		{
@@ -551,11 +553,11 @@ public class DBConnection {
 			}
 			if(beforedate_id > 0)
 			{
-				prst.setString(beforedate_id, beforeDate.toString());
+				prst.setDate(beforedate_id, beforeDate);
 			}
 			if(afterdate_id > 0)
 			{
-				prst.setString(afterdate_id, afterDate.toString());
+				prst.setDate(afterdate_id, afterDate);
 			}
 			//smacznego
 			prstr = prst.toString();
